@@ -31,14 +31,25 @@ def check_end():
     if "playButton" in playBtn.get_attribute("class"):
         return True
 
-
 def close_tanti():
     try:
-        nextButton = browser.find_element_by_xpath('//a[@class="popbtn_cancel"]')
-        time.sleep(3)
-        nextButton.click()
-        return True
-    except:
+        ele = browser.find_element_by_id('tmDialog_iframe')
+        if ele:
+            print(time.strftime("[%H:%M] ")+'检测到弹题')
+            browser.switch_to_frame(ele)
+            time.sleep(2)
+            divs = browser.find_elements_by_xpath('//div[@class="answerOption"]/label/input')
+            divs[1].click()
+            print(time.strftime("[%H:%M] ")+'已点击第二个答案')
+            browser.switch_to_default_content()
+            nextButton = browser.find_element_by_xpath('//a[@class="popbtn_cancel"]')
+            time.sleep(2)
+            nextButton.click()
+            return True
+        else:
+            return False
+    except Exception as e:
+        print(e)
         return False
 
 
